@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35514.174 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek-spark", "ensek-spark.csproj", "{A51E1D01-AB8C-4741-9ACA-D370CD49F69A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek-spark-tests", "..\ensek-spark-tests\ensek-spark-tests.csproj", "{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A51E1D01-AB8C-4741-9ACA-D370CD49F69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A51E1D01-AB8C-4741-9ACA-D370CD49F69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A51E1D01-AB8C-4741-9ACA-D370CD49F69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
