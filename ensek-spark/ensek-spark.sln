@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek-spark", "ensek-spark.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek-spark-tests", "..\ensek-spark-tests\ensek-spark-tests.csproj", "{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_data", "test_data", "{1D08C119-4595-4C56-8088-79C60B6AF4AD}"
+	ProjectSection(SolutionItems) = preProject
+		..\ensek-test-data\Meter_Reading.csv = ..\ensek-test-data\Meter_Reading.csv
+		..\ensek-test-data\Test_Accounts.csv = ..\ensek-test-data\Test_Accounts.csv
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
