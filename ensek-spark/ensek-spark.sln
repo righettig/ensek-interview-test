@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek-spark", "ensek-spark.csproj", "{A51E1D01-AB8C-4741-9ACA-D370CD49F69A}"
 EndProject
@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_data", "test_data", "{
 	ProjectSection(SolutionItems) = preProject
 		..\ensek-test-data\Meter_Reading.csv = ..\ensek-test-data\Meter_Reading.csv
 		..\ensek-test-data\Test_Accounts.csv = ..\ensek-test-data\Test_Accounts.csv
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{575FEA55-832E-4EBE-8B26-258C941B0895}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Global
