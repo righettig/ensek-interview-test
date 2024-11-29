@@ -2,6 +2,7 @@
 
 ## How to run
 - using Docker Compose:
+	- add ".env" file at root folder adding defs for: METER_READING_DATABASE_NAME, COSMOSDB_CONNECTION_STRING
 	- launch from root folder: docker compose up --build
 	- test API using Postman collection located at /tests/ENSEK.postman_collection.json
 	- or 
@@ -29,14 +30,12 @@
 		DONE create docker compose file
 		DONE create dockerfile
 
-	WIP set up postman collection
+	DONE set up postman collection
 
-	TODO seed placeholder backgroundservice to load data in db
+	WIP seed placeholder backgroundservice to load data in db
 		read user file
-		create [repository] service
-		create dbcontext 
-			or use cosmos db SDK?
-
+		use cosmos db SDK to upsert user account
+		
 	unit test controller (return number of failures/success)
 	create [repository] service
 	create dbcontext 
@@ -70,3 +69,4 @@
 ### BONUS material ?
 	1) discuss how to scale
 	2) event sourcing
+	3) split user account related code into separate microservice

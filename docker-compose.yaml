@@ -20,8 +20,8 @@ services:
     ports:
       - "4000:8080" # https not working so far!
     environment:
-      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
-      - COSMOSDB_KEY=${COSMOSDB_KEY}
+      - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
+      - DatabaseName=${METER_READING_DATABASE_NAME}
 
   #----------------------#
   # DBs & Message queues #
