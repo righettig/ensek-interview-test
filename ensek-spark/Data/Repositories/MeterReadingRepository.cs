@@ -1,8 +1,7 @@
-﻿using ensek_spark.Data;
-using ensek_spark.Models;
+﻿using ensek_spark.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ensek_spark.Services;
+namespace ensek_spark.Data.Repositories;
 
 public class MeterReadingRepository : IMeterReadingRepository
 {

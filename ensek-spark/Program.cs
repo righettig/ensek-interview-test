@@ -1,4 +1,5 @@
 using ensek_spark.Data;
+using ensek_spark.Data.Repositories;
 using ensek_spark.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ var cosmosClientOptions = new CosmosClientOptions()
 var cosmosClient = new CosmosClient(cosmosDbConnectionString, cosmosClientOptions);
 builder.Services.AddSingleton(cosmosClient);
 
+builder.Services.AddDbContext<UserAccountContext>(options => options.UseCosmos(cosmosDbConnectionString, databaseName, cosmosOptions =>
+{
+    cosmosOptions.ConnectionMode(ConnectionMode.Gateway);
+    cosmosOptions.HttpClientFactory(httpClientFactory);
+}));
+
 builder.Services.AddDbContext<MeterReadingContext>(options => options.UseCosmos(cosmosDbConnectionString, databaseName, cosmosOptions =>
 {
     cosmosOptions.ConnectionMode(ConnectionMode.Gateway);
@@ -40,7 +47,9 @@ builder.Services.AddHostedService(sp =>
     return new CosmosDbInitializationService(cosmosClient, logger, databaseName);
 });
 
+builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>(); // TODO: singleton?
 builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>(); // TODO: singleton?
+builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

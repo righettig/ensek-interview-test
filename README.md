@@ -39,19 +39,25 @@
 	DONE create dbcontext for meter readinng
 	DONE create meter reading repository service
 
-	unit test controller (return number of failures/success)
-	
-	validations: 
-		1) no duplicates (discuss how to scale using cache?)
-		2) no invalid ids allowed
-		3) new read SHOULD NOT be OLDER than existing one
-		4) check format
-		
-	create angular client
-	create react client
-	
-	TODO: sql server db
+	DONE implement endpoint to read data from csv file
+		validations: 
+			1) no duplicates
+			2) no invalid account ids allowed
+			3) check format to be NNNNN
 
+	DONE update postman collection in order to test the endpoint
+
+	TODO validation: new read SHOULD NOT be OLDER than existing one
+
+	code cleanup & refactoring
+
+	unit testing
+		controller (return number of failures/success)
+		service: validations
+		data context?
+
+	create angular client | create react client
+	
 ### API design:
 	
 	POST /meter-reading-uploads
@@ -69,6 +75,8 @@
 	
 ### BONUS material ?
 	1) add architectural diagram
-	2) discuss how to scale
-	3) event sourcing
-	4) split user account related code into separate microservice
+	2) use sql server db
+	3) discuss how to scale (check for validations use a cache?)
+	4) event sourcing
+	5) split user account related code into separate microservice
+	6) AWS resources?

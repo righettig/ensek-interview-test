@@ -38,6 +38,16 @@
 								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Giacomo Righetti/source/repos/ensek-interview-test/ensek-test-data/Meter_Reading.csv"
+								}
+							]
+						},
 						"url": {
 							"raw": "http://localhost:4000/meter-reading-uploads",
 							"protocol": "http",
