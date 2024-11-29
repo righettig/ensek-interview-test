@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "262313c9-af0e-4643-a72c-650726e750a3",
+		"name": "ENSEK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1748896"
+	},
+	"item": [
+		{
+			"name": "Meter Readings",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/meter-readings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"meter-readings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/meter-reading-uploads",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"meter-reading-uploads"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

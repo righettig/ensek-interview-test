@@ -4,3 +4,4 @@
 /ensek-spark/bin
 /ensek-spark-tests/bin
 /ensek-spark-tests/obj
+.env

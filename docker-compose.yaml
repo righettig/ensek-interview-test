@@ -1,0 +1,58 @@
+services:
+  #------------#
+  # Front-ends #
+  #------------#
+
+  #--------------#
+  # Gateway APIs #
+  #--------------#
+  
+  #---------------#
+  # Microservices #
+  #---------------#
+  meter-reading-service:
+    depends_on:
+      cosmosdb:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./ensek-spark/Dockerfile
+    ports:
+      - "4000:8080" # https not working so far!
+    environment:
+      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+      - COSMOSDB_KEY=${COSMOSDB_KEY}
+
+  #----------------------#
+  # DBs & Message queues #
+  #----------------------#
+  cosmosdb:
+    # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
+    image: cosmos-emulator-wrapper
+    build:
+      dockerfile_inline: |
+        FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        RUN apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            curl
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+      # This allows applications from the host to connect to the docker instance.
+      # Use https://127.0.0.1:8081 as the endpoint.
+      # However this seems to breaks other services running in Docker.
+      # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
+    ports:
+      - "8081:8081"
+    # volumes:
+    #   - cosmos_data:/CosmosDB/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
+      start_period: 1m
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+# volumes:
+    # cosmos_data:
+    
