@@ -12,4 +12,10 @@ public class MeterReadingController(
     {
 
     }
+
+    [HttpGet("/meter-readings")]
+    public void GetMeterReadings()
+    {
+
+    }
 }

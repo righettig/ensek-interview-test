@@ -8,8 +8,10 @@ User story:
 	
 Premiminary task decomposition:
 		
-	create API 
-	seed db using backgroundservice
+	DONE create API placeholder
+	
+	WIP seed db using backgroundservice
+
 	unit test controller (return number of failures/success)
 	create [repository] service
 	create dbcontext 
