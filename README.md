@@ -42,3 +42,9 @@ Entities
 BONUS material ?
 	1) discuss how to scale
 	2) event sourcing 
+
+---
+
+docker compose to 
+	launch front-end(s)
+	launch db(s)
