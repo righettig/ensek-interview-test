@@ -1,8 +1,11 @@
-﻿namespace ensek_spark.Models;
+﻿using Newtonsoft.Json;
+
+namespace ensek_spark.Models;
 
 public class UserAccount
 {
-    public Guid AccountId { get; set; }
+    [JsonProperty("id")]
+    public string AccountId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
 }

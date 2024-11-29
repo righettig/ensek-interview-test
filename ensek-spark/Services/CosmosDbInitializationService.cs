@@ -1,50 +1,76 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using ensek_spark.Models;
+using Microsoft.Azure.Cosmos;
+using System.Globalization;
 
 namespace ensek_spark.Services;
 
-public class CosmosDbInitializationService : IHostedService
+public class CosmosDbInitializationService(CosmosClient cosmosClient,
+                                           ILogger<CosmosDbInitializationService> logger,
+                                           string databaseId) : BackgroundService
 {
-    private readonly CosmosClient _cosmosClient;
-    private readonly ILogger<CosmosDbInitializationService> _logger;
-    private readonly string _databaseId;
+    private readonly CosmosClient _cosmosClient = cosmosClient;
 
-    public CosmosDbInitializationService(CosmosClient cosmosClient, ILogger<CosmosDbInitializationService> logger, string databaseId)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _cosmosClient = cosmosClient;
-        _logger = logger;
-        _databaseId = databaseId;
-    }
-
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        _logger.LogInformation("Starting CosmosDB Initialization...");
+        logger.LogInformation("Starting CosmosDB Initialization...");
 
         Database database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(
-            id: _databaseId,
+            id: databaseId,
             throughput: 400,
-            cancellationToken: cancellationToken
+            cancellationToken: stoppingToken
         );
 
-        _logger.LogInformation($"{_databaseId} database created or already exists.");
+        logger.LogInformation($"{databaseId} database created or already exists.");
 
         await database.CreateContainerIfNotExistsAsync(
             id: "meter-readings",
-            partitionKeyPath: "/AccountId",
-            cancellationToken: cancellationToken
+            partitionKeyPath: "/accountId",
+            cancellationToken: stoppingToken
         );
-        _logger.LogInformation("Meter readings container created or already exists.");
+        logger.LogInformation("Meter readings container created or already exists.");
 
         await database.CreateContainerIfNotExistsAsync(
             id: "user-accounts",
-            partitionKeyPath: "/AccountId",
-            cancellationToken: cancellationToken
+            partitionKeyPath: "/id",
+            cancellationToken: stoppingToken
         );
-        _logger.LogInformation("Meter readings container created or already exists.");
+        logger.LogInformation("Meter readings container created or already exists.");
+
+        // Import user accounts
+        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../ensek-test-data/Test_Accounts.csv");
+        if (!File.Exists(filePath))
+        {
+            logger.LogError($"File not found: {filePath}");
+            return;
+        }
+        await ImportUserAccountsAsync(database, filePath, stoppingToken);
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    private async Task ImportUserAccountsAsync(Database database, string filePath, CancellationToken cancellationToken)
     {
-        // No action required on stopping
-        return Task.CompletedTask;
+        var container = database.GetContainer("user-accounts");
+
+        // Read CSV file
+        var users = new List<UserAccount>();
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = true
+        };
+
+        using (var reader = new StreamReader(filePath))
+        using (var csv = new CsvReader(reader, config))
+        {
+            users = csv.GetRecords<UserAccount>().ToList();
+        }
+
+        // Insert each user into the container
+        foreach (var user in users)
+        {
+            await container.UpsertItemAsync(user, cancellationToken: cancellationToken);
+        }
+
+        logger.LogInformation($"{users.Count} user accounts imported into the user-accounts collection.");
     }
 }

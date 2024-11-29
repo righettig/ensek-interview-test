@@ -32,7 +32,7 @@
 
 	DONE set up postman collection
 
-	WIP seed placeholder backgroundservice to load data in db
+	DONE seed placeholder backgroundservice to load data in db
 		read user file
 		use cosmos db SDK to upsert user account
 		

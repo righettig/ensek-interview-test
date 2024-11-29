@@ -22,6 +22,8 @@ services:
     environment:
       - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
       - DatabaseName=${METER_READING_DATABASE_NAME}
+    volumes:
+      - ./ensek-test-data:/ensek-test-data
 
   #----------------------#
   # DBs & Message queues #
