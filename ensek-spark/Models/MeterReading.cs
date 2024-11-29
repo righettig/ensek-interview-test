@@ -1,8 +1,11 @@
-﻿namespace ensek_spark.Models;
+﻿using Newtonsoft.Json;
+
+namespace ensek_spark.Models;
 
 public class MeterReading
 {
-    public Guid AccountId { get; set; }
+    [JsonProperty("id")]
+    public string AccountId { get; set; }
     public DateTime MeterReadingDateTime { get; set; }
-    public decimal MeterReadValue { get; set; } // TODO: or int? float?
+    public int MeterReadValue { get; set; }
 }

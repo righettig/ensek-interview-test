@@ -40,6 +40,8 @@ builder.Services.AddHostedService(sp =>
     return new CosmosDbInitializationService(cosmosClient, logger, databaseName);
 });
 
+builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>(); // TODO: singleton?
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

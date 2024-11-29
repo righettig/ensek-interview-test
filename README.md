@@ -18,7 +18,7 @@
 
 ## User story:
 	
-	As an Energy Company Account Manager I want to be able to load a CSV fiel of Custom Meter Readings
+	As an Energy Company Account Manager I want to be able to load a CSV file of Custom Meter Readings
 	so that we can monitor their energy consumption
 	and charge them accordingly
 	
@@ -35,10 +35,11 @@
 	DONE seed placeholder backgroundservice to load data in db
 		read user file
 		use cosmos db SDK to upsert user account
-		
+	
+	DONE create dbcontext for meter readinng
+	DONE create meter reading repository service
+
 	unit test controller (return number of failures/success)
-	create [repository] service
-	create dbcontext 
 	
 	validations: 
 		1) no duplicates (discuss how to scale using cache?)
@@ -67,6 +68,7 @@
 		AccountId, FirstName, LastName
 	
 ### BONUS material ?
-	1) discuss how to scale
-	2) event sourcing
-	3) split user account related code into separate microservice
+	1) add architectural diagram
+	2) discuss how to scale
+	3) event sourcing
+	4) split user account related code into separate microservice

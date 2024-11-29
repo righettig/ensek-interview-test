@@ -26,7 +26,7 @@ public class CosmosDbInitializationService(CosmosClient cosmosClient,
 
         await database.CreateContainerIfNotExistsAsync(
             id: "meter-readings",
-            partitionKeyPath: "/accountId",
+            partitionKeyPath: "/id",
             cancellationToken: stoppingToken
         );
         logger.LogInformation("Meter readings container created or already exists.");
