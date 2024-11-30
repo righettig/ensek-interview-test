@@ -52,7 +52,7 @@
 		service: validations
 		other?
 
-	code cleanup & refactoring
+	DONE code cleanup & refactoring
 		Program.cs
 		/Data folder structure
 

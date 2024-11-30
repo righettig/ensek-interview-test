@@ -1,4 +1,4 @@
-﻿using ensek_spark.Data.Repositories;
+﻿using ensek_spark.Data.Repositories.Interfaces;
 using ensek_spark.Models;
 using ensek_spark.Services;
 using Microsoft.AspNetCore.Http;

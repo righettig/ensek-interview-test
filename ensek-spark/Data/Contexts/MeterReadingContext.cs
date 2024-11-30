@@ -1,7 +1,7 @@
 ﻿using ensek_spark.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ensek_spark.Data;
+namespace ensek_spark.Data.Contexts;
 
 public class MeterReadingContext : DbContext
 {

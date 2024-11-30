@@ -1,9 +1,9 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
-using ensek_spark.Data.Repositories;
 using ensek_spark.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using ensek_spark.Data.Repositories.Interfaces;
 
 namespace ensek_spark.Services;
 

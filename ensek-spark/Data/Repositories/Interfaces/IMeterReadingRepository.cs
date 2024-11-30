@@ -1,6 +1,6 @@
 ﻿using ensek_spark.Models;
 
-namespace ensek_spark.Data.Repositories;
+namespace ensek_spark.Data.Repositories.Interfaces;
 
 public interface IMeterReadingRepository
 {
