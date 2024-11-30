@@ -1,7 +1,7 @@
 import { useFileUploader, useMeterReadings } from "../hooks/custom-hooks";
 
 import FileUploader from "./file-uploader";
-import MeterReadingsList from "./meter-readings-list";
+import MeterReadingsTable from "./meter-readings-table";
 
 const Home = () => {
     const { readings, error } = useMeterReadings();
@@ -17,7 +17,7 @@ const Home = () => {
 
             <div className="readings-section">
                 {error && <p className="error">{error}</p>}
-                <MeterReadingsList readings={readings} />
+                <MeterReadingsTable readings={readings} />
             </div>
         </div>
     );
