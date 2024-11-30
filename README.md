@@ -56,8 +56,10 @@
 	DONE validation: new read SHOULD NOT be OLDER than existing one
 
 	WIP create react client
-		>> load meter readings
-		>> upload meter readings
+		DONE load meter readings
+		DONE upload meter readings
+		FIX: Successfully uploaded: undefined readings
+		Improve visuals
 		display validation results
 		filter by account Id
 

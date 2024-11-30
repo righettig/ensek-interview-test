@@ -1,6 +1,7 @@
 using ensek_spark.Data.Contexts;
 using ensek_spark.Data.Repositories.Impl;
 using ensek_spark.Data.Repositories.Interfaces;
+using ensek_spark.Extensions;
 using ensek_spark.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(["http://localhost:5000"]);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -59,6 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+app.UseCors("AllowLocalApps");
 app.MapControllers();
 app.Run();
 
