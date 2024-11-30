@@ -2,6 +2,24 @@ services:
   #------------#
   # Front-ends #
   #------------#
+  ensek-spark-app:
+    depends_on:
+      - meter-reading-service
+    build:
+      context: ./ensek-spark-web
+    ports:
+      - "5000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=${BACK_END_API_URL}
+    develop:
+      watch:
+        - action: sync
+          path: ./ensek-spark-web
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./ensek-spark-web/package.json
 
   #--------------#
   # Gateway APIs #

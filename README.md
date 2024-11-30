@@ -2,7 +2,7 @@
 
 ## How to run
 - using Docker Compose:
-	- add ".env" file at root folder adding defs for: METER_READING_DATABASE_NAME, COSMOSDB_CONNECTION_STRING
+	- add ".env" file at root folder adding defs for: METER_READING_DATABASE_NAME, COSMOSDB_CONNECTION_STRING, BACK_END_API_URL
 	- launch from root folder: docker compose up --build
 	- test API using Postman collection located at /tests/ENSEK.postman_collection.json
 	- or 
@@ -58,16 +58,15 @@
 
 	DONE validation: new read SHOULD NOT be OLDER than existing one
 
-	create angular client | create react client
-		load meter readings
+	WIP create react client
+		>> load meter readings
+		>> upload meter readings
+		display validation results
 		filter by account Id
-	
-		upload meter readings
-			display validation results
 
 	integration testing
 
-	check solution is working without docker compose
+	check solution works without docker compose
 
 	improve documentation
 	
