@@ -2,16 +2,15 @@
 
 ## How to run
 - using Docker Compose:
-	- add ".env" file at root folder adding defs for: METER_READING_DATABASE_NAME, COSMOSDB_CONNECTION_STRING, BACK_END_API_URL
+	- add ".env" file at root folder
+	- adding defs for: METER_READING_DATABASE_NAME, COSMOSDB_CONNECTION_STRING, BACK_END_API_URL
+	- for instance: 
+		- BACK_END_API_URL=http://localhost:4000
+		- METER_READING_DATABASE_NAME=ensek-spark-db
+		- COSMOSDB_CONNECTION_STRING=AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
 	- launch from root folder: docker compose up --build
-	- test API using Postman collection located at /tests/ENSEK.postman_collection.json
-	- or 
-		- POST http://localhost:4000/meter-reading-uploads
-		- GET http://localhost:4000/meter-readings
 	- React front-end is available at http://localhost:5000
-
-- using VS
-	- TODO
+	- A Postman collection can be found /tests/ENSEK.postman_collection.json for API testing
 
 ## User story:
 	
@@ -64,11 +63,11 @@
 		table for meter readings
 		display validation results
 
+	DONE improve documentation
+	
+	add screenshots
+
 	integration testing
-
-	check solution works without docker compose
-
-	improve documentation + add screenshots
 	
 ### API design:
 	
