@@ -60,8 +60,9 @@
 		DONE upload meter readings
 		DONE improve visuals
 		DONE format timestamp
+		DONE cleanup: create sub-components
 
-		cleanup: create sub-components, table for meter readings?
+		table for meter readings
 		display validation results
 		filter by account Id
 
