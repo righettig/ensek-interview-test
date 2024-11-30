@@ -1,3 +1,4 @@
+using ensek_spark.DTOs;
 using ensek_spark.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +12,14 @@ public class MeterReadingController(IMeterReadingService meterReadingService,
     [HttpPost("/meter-reading-uploads")]
     public async Task<IActionResult> UploadMeterReadings(IFormFile file)
     {
+        if (file is null)
+        {
+            return BadRequest("File is missing or empty.");
+        }
+
         var (successfulReadings, failedReadings) = await meterReadingService.ProcessMeterReadingsAsync(file);
 
-        return Ok(new
-        {
-            SuccessfulCount = successfulReadings.Count,
-            FailedCount = failedReadings.Count,
-            FailedDetails = failedReadings
-        });
+        return Ok(new UploadMeterReadingsResult(successfulReadings.Count, failedReadings.Count, failedReadings));
     }
 
     [HttpGet("/meter-readings")]

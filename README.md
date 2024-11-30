@@ -47,16 +47,18 @@
 
 	DONE update postman collection in order to test the endpoint
 
-	TODO validation: new read SHOULD NOT be OLDER than existing one
+	DONE unit testing
+		controller (return number of failures/success)
+		service: validations
+		other?
+
+	validation: new read SHOULD NOT be OLDER than existing one
 
 	code cleanup & refactoring
 
-	unit testing
-		controller (return number of failures/success)
-		service: validations
-		data context?
-
 	create angular client | create react client
+
+	integration testing
 	
 ### API design:
 	

@@ -26,6 +26,6 @@ public class CustomDateTimeConverter : ITypeConverter
 
     public string? ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
     {
-        return value.ToString();
+        return value?.ToString();
     }
 }

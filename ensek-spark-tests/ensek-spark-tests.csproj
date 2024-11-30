@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ensek-spark\ensek-spark.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
