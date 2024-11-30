@@ -25,19 +25,25 @@ public class MeterReadingRepository : IMeterReadingRepository
             .FirstOrDefaultAsync(m => m.AccountId == accountId);
     }
 
-    public async Task AddAsync(MeterReading meterReading)
+    public async Task UpsertAsync(MeterReading meterReading)
     {
         ArgumentNullException.ThrowIfNull(meterReading);
 
-        await _context.MeterReadings.AddAsync(meterReading);
-        await _context.SaveChangesAsync();
-    }
+        // Check if the entity already exists in the context (tracked entities)
+        var existingEntity = await GetByIdAsync(meterReading.AccountId);
 
-    public async Task UpdateAsync(MeterReading meterReading)
-    {
-        ArgumentNullException.ThrowIfNull(meterReading);
+        if (existingEntity != null)
+        {
+            // Entity exists, update the existing one
+            _context.Entry(existingEntity).CurrentValues.SetValues(meterReading);
+        }
+        else
+        {
+            // Entity does not exist, add as a new entity
+            await _context.MeterReadings.AddAsync(meterReading);
+        }
 
-        _context.MeterReadings.Update(meterReading);
+        // Save changes to the database
         await _context.SaveChangesAsync();
     }
 

@@ -28,7 +28,8 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
             .ToDictionary(u => u.AccountId);
 
         var existingReadings = (await meterReadingRepository.GetAllAsync())
-            .ToHashSet(new MeterReadingComparer());
+            .GroupBy(r => r.AccountId)
+            .ToDictionary(g => g.Key, g => g.Max(r => r.MeterReadingDateTime));
 
         while (await csv.ReadAsync())
         {
@@ -52,15 +53,27 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
                 }
 
                 // Validate Duplicate Entry
-                if (existingReadings.Contains(record))
+                if (existingReadings.ContainsKey(record.AccountId) &&
+                    existingReadings[record.AccountId] == record.MeterReadingDateTime)
                 {
                     failedReadings.Add($"Duplicate entry: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime}");
                     continue;
                 }
 
+                // Validate that the new reading is not older than the existing reading
+                if (existingReadings.TryGetValue(record.AccountId, out var latestReadingDateTime) &&
+                    record.MeterReadingDateTime < latestReadingDateTime)
+                {
+                    failedReadings.Add($"Reading too old: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime} (latest: {latestReadingDateTime})");
+                    continue;
+                }
+
                 // Add valid record
-                await meterReadingRepository.AddAsync(record);
+                await meterReadingRepository.UpsertAsync(record);
                 successfulReadings.Add(record);
+
+                // Update the latest reading for this account
+                existingReadings[record.AccountId] = record.MeterReadingDateTime;
             }
             catch (Exception ex)
             {
@@ -71,4 +84,3 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
         return (successfulReadings, failedReadings);
     }
 }
-

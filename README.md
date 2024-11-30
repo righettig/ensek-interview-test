@@ -56,7 +56,7 @@
 		Program.cs
 		/Data folder structure
 
-	validation: new read SHOULD NOT be OLDER than existing one
+	DONE validation: new read SHOULD NOT be OLDER than existing one
 
 	create angular client | create react client
 		load meter readings
@@ -66,6 +66,8 @@
 			display validation results
 
 	integration testing
+
+	check solution is working without docker compose
 
 	improve documentation
 	
@@ -84,7 +86,7 @@
 	User
 		AccountId, FirstName, LastName
 	
-### BONUS material ?
+### BONUS material?
 	1) add architectural diagram
 	2) use sql server db
 	3) discuss how to scale (check for validations use a cache?)
