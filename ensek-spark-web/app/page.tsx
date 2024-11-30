@@ -6,7 +6,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface MeterReading {
   accountId: string;
-  meterReadingDateTime: Date;
+  meterReadingDateTime: string;
   meterReadValue: number;
 }
 
@@ -15,6 +15,18 @@ const Home = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [uploadMessage, setUploadMessage] = useState('');
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false, // Use 24-hour format
+    }).format(date);
+  };
 
   // Fetch meter readings from the API
   useEffect(() => {
@@ -91,7 +103,9 @@ const Home = () => {
         ) : (
           <ul>
             {readings.map((reading, index) => (
-              <li key={index}>{`Account ID: ${reading.accountId}, Timestamp: ${reading.meterReadingDateTime}, Value: ${reading.meterReadValue}`}</li>
+              <li key={index}>
+                {`Account ID: ${reading.accountId}, Timestamp: ${formatDate(reading.meterReadingDateTime)}, Value: ${reading.meterReadValue}`}
+              </li>
             ))}
           </ul>
         )}
