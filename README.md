@@ -66,12 +66,6 @@
 	DONE improve documentation
 	
 	DONE add screenshots
-
-	integration testing
-
-	cleanup css code: move styles to specific components
-
-	add architectural diagram
 	
 ### API design:
 	
@@ -94,4 +88,6 @@
 	3) consider splitting user account related code into separate microservice
 	4) introduce API gateway
 	5) discuss how to scale (check for validations use a cache?)
+	6) cleanup css code: move styles to specific components	
+	7) add architectural diagram
 	
