@@ -58,16 +58,18 @@
 	WIP create react client
 		DONE load meter readings
 		DONE upload meter readings
-		FIX: Successfully uploaded: undefined readings
-		Improve visuals
+		DONE improve visuals
+		
 		display validation results
 		filter by account Id
+		format timestamp
+		cleanup: create sub-components, table for meter readings?
 
 	integration testing
 
 	check solution works without docker compose
 
-	improve documentation
+	improve documentation + add screenshots
 	
 ### API design:
 	

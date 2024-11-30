@@ -58,7 +58,7 @@ const Home = () => {
 
       if (response.ok) {
         const result = await response.json();
-        setUploadMessage(`Successfully uploaded: ${result.successfulReadingsCount} readings`);
+        setUploadMessage(`Upload response - successfulCount: ${result.successfulCount}, failedCount: ${result.failedCount}`);
       } else {
         setUploadMessage('Failed to upload readings.');
       }
@@ -68,26 +68,33 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Meter Readings</h1>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <h1 style={{ fontSize: '2em' }}>ENSEK Spark</h1>
+      <h2 style={{ fontSize: '1.2em', marginTop: '12px' }}>Meter Readings</h2>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {readings.length === 0 ? (
-        <p>No meter readings found.</p>
-      ) : (
-        <ul>
-          {readings.map((reading, index) => (
-            <li key={index}>{`Account ID: ${reading.accountId}, Timestamp: ${reading.meterReadingDateTime}, Value: ${reading.meterReadValue}`}</li>
-          ))}
-        </ul>
-      )}
-
-      <div>
-        <h2>Upload Meter Readings</h2>
+      <div style={{ marginTop: '12px' }}>
+        <h2 style={{ marginBottom: '8px' }}>Upload Meter Readings</h2>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
-        {uploadMessage && <p>{uploadMessage}</p>}
+        <div style={{ marginTop: '8px' }}>
+          {uploadMessage && <p>{uploadMessage}</p>}
+        </div>
+      </div>
+
+      <div style={{ padding: '24px', marginTop: '12px', border: 'solid 1px black' }}>
+        <div>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+        </div>
+
+        {readings.length === 0 ? (
+          <p>No meter readings found.</p>
+        ) : (
+          <ul>
+            {readings.map((reading, index) => (
+              <li key={index}>{`Account ID: ${reading.accountId}, Timestamp: ${reading.meterReadingDateTime}, Value: ${reading.meterReadValue}`}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
