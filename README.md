@@ -8,13 +8,10 @@
 	- or 
 		- POST http://localhost:4000/meter-reading-uploads
 		- GET http://localhost:4000/meter-readings
+	- React front-end is available at http://localhost:5000
 
 - using VS
 	- TODO
-
-- using Angular/React client
-	- TODO
-
 
 ## User story:
 	
