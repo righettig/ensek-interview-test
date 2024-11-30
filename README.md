@@ -65,9 +65,13 @@
 
 	DONE improve documentation
 	
-	add screenshots
+	DONE add screenshots
 
 	integration testing
+
+	cleanup css code: move styles to specific components
+
+	add architectural diagram
 	
 ### API design:
 	
@@ -84,10 +88,10 @@
 	User
 		AccountId, FirstName, LastName
 	
-### BONUS material?
-	1) add architectural diagram
-	2) use sql server db
-	3) discuss how to scale (check for validations use a cache?)
-	4) event sourcing
-	5) split user account related code into separate microservice
-	6) AWS resources?
+### Improvements
+	1) use sql server db
+	2) event sourcing (to capture changes for auditing)
+	3) consider splitting user account related code into separate microservice
+	4) introduce API gateway
+	5) discuss how to scale (check for validations use a cache?)
+	
