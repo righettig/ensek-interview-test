@@ -31,12 +31,20 @@ export const useMeterReadings = () => {
 };
 
 // Custom hook for uploading files
+interface UploadMeterReadingsResult {
+    successfulCount: number;
+    failedCount: number;
+    failedDetails: string[] | null;
+}
+
 export const useFileUploader = () => {
     const [uploadMessage, setUploadMessage] = useState<string>("");
+    const [failedDetails, setFailedDetails] = useState<string[] | null>(null);
 
     const handleUpload = async (file: File | null) => {
         if (!file) {
             setUploadMessage("Please select a file to upload.");
+            setFailedDetails(null);
             return;
         }
 
@@ -50,17 +58,20 @@ export const useFileUploader = () => {
             });
 
             if (response.ok) {
-                const result = await response.json();
+                const result: UploadMeterReadingsResult = await response.json();
                 setUploadMessage(
                     `Upload response - successfulCount: ${result.successfulCount}, failedCount: ${result.failedCount}`
                 );
+                setFailedDetails(result.failedDetails);
             } else {
                 setUploadMessage("Failed to upload readings.");
+                setFailedDetails(null);
             }
         } catch (err) {
             setUploadMessage("Error uploading file.");
+            setFailedDetails(null);
         }
     };
 
-    return { uploadMessage, handleUpload };
+    return { uploadMessage, failedDetails, handleUpload };
 };

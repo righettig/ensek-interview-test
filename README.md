@@ -55,16 +55,14 @@
 
 	DONE validation: new read SHOULD NOT be OLDER than existing one
 
-	WIP create react client
-		DONE load meter readings
-		DONE upload meter readings
-		DONE improve visuals
-		DONE format timestamp
-		DONE cleanup: create sub-components
-
+	DONE create react client
+		load meter readings
+		upload meter readings
+		improve visuals
+		format timestamp
+		cleanup: create sub-components
 		table for meter readings
 		display validation results
-		filter by account Id
 
 	integration testing
 
