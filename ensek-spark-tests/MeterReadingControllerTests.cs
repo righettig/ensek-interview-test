@@ -1,4 +1,5 @@
 using ensek_spark.Controllers;
+using ensek_spark.Data.Repositories;
 using ensek_spark.DTOs;
 using ensek_spark.Models;
 using ensek_spark.Services;
@@ -12,6 +13,7 @@ namespace ensek_spark_tests;
 
 public class MeterReadingControllerTests
 {
+    private readonly Mock<IMeterReadingRepository> _meterReadingRepositoryMock;
     private readonly Mock<IMeterReadingService> _meterReadingServiceMock;
     private readonly Mock<ILogger<MeterReadingController>> _loggerMock;
 
@@ -19,10 +21,13 @@ public class MeterReadingControllerTests
 
     public MeterReadingControllerTests()
     {
+        _meterReadingRepositoryMock = new Mock<IMeterReadingRepository>();
         _meterReadingServiceMock = new Mock<IMeterReadingService>();
         _loggerMock = new Mock<ILogger<MeterReadingController>>();
 
-        _controller = new MeterReadingController(_meterReadingServiceMock.Object, _loggerMock.Object);
+        _controller = new MeterReadingController(_meterReadingServiceMock.Object,
+                                                 _meterReadingRepositoryMock.Object,
+                                                 _loggerMock.Object);
     }
 
     #region UploadMeterReadings
@@ -77,13 +82,63 @@ public class MeterReadingControllerTests
     #region GetMeterReadings
 
     [Fact]
-    public void GetMeterReadings_ReturnsOkString()
+    public async Task GetMeterReadings_ReturnsOkResult_WithListOfMeterReadings()
     {
+        // Arrange
+        var mockMeterReadings = new List<MeterReading>
+        {
+            new MeterReading { AccountId = "123", MeterReadingDateTime = new DateTime(2024, 1, 1, 12, 0, 0), MeterReadValue = 100 },
+            new MeterReading { AccountId = "456", MeterReadingDateTime = new DateTime(2024, 1, 2, 12, 0, 0), MeterReadValue = 200 }
+        };
+
+        _meterReadingRepositoryMock
+            .Setup(repo => repo.GetAllAsync())
+            .ReturnsAsync(mockMeterReadings);
+
         // Act
-        var result = _controller.GetMeterReadings();
+        var result = await _controller.GetMeterReadings();
 
         // Assert
-        Assert.Equal("OK", result);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var actualMeterReadings = Assert.IsAssignableFrom<IEnumerable<MeterReading>>(okResult.Value);
+
+        Assert.Equal(2, actualMeterReadings.Count());
+    }
+
+    [Fact]
+    public async Task GetMeterReadings_ReturnsOkResult_WithEmptyList_WhenNoReadingsExist()
+    {
+        // Arrange
+        var mockMeterReadings = new List<MeterReading>(); // Empty list
+
+        _meterReadingRepositoryMock
+            .Setup(repo => repo.GetAllAsync())
+            .ReturnsAsync(mockMeterReadings);
+
+        // Act
+        var result = await _controller.GetMeterReadings();
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var actualMeterReadings = Assert.IsAssignableFrom<IEnumerable<MeterReading>>(okResult.Value);
+
+        Assert.Empty(actualMeterReadings);
+    }
+
+    [Fact]
+    public async Task GetMeterReadings_RepositoryThrowsException_Returns500Status()
+    {
+        // Arrange
+        _meterReadingRepositoryMock
+            .Setup(repo => repo.GetAllAsync())
+            .ThrowsAsync(new Exception("Database error"));
+
+        // Act
+        var result = await _controller.GetMeterReadings();
+
+        // Assert
+        var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
+        Assert.Equal(StatusCodes.Status500InternalServerError, statusCodeResult.StatusCode);
     }
 
     #endregion

@@ -52,13 +52,22 @@
 		service: validations
 		other?
 
+	code cleanup & refactoring
+		Program.cs
+		/Data folder structure
+
 	validation: new read SHOULD NOT be OLDER than existing one
 
-	code cleanup & refactoring
-
 	create angular client | create react client
+		load meter readings
+		filter by account Id
+	
+		upload meter readings
+			display validation results
 
 	integration testing
+
+	improve documentation
 	
 ### API design:
 	

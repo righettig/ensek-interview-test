@@ -47,8 +47,8 @@ builder.Services.AddHostedService(sp =>
     return new CosmosDbInitializationService(cosmosClient, logger, databaseName);
 });
 
-builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>(); // TODO: singleton?
-builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>(); // TODO: singleton?
+builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>();
 builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
 
 builder.Services.AddControllers();
