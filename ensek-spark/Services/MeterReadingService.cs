@@ -68,6 +68,15 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
             .ToDictionary(g => g.Key, g => g.Max(r => r.MeterReadingDateTime));
     }
 
+    /* Potential improvement
+     * ---------------------
+     * This code is easy enough but we have some hardcoded rules for the validation logic.
+     * To make the validation logic generic and extensible we can use the strategy pattern and the factory pattern.
+     * Create a IValidationRule interface that defines a method to validate a record.
+     * Implement different validation rules (e.g., AccountIdValidationRule, MeterReadValueValidationRule, etc.) as separate classes.
+     * Create a factory that instantiates each rule (we can use reflection to discover implementation of the IValidationRule.
+     * The ProcessMeterReadingsAsync method loops through the rules and applies them.
+     */
     private static bool IsValidMeterReading(MeterReading record,
                                             Dictionary<string, UserAccount> userAccounts,
                                             Dictionary<string, DateTime> existingReadings,
@@ -82,7 +91,10 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
             return false;
         }
 
+        // ASSUMPTION: based on the acceptance criteria on slide 03 I am assuming that all readings must be EXACTLY 5 digits.
+        // if all numerical values up to 5 digits are to be considered valid please use this instead.
         // if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{1,5}$")) // up to 5 chars
+
         if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{5}$"))
         {
             validationError = $"Invalid MeterReadValue: {record.MeterReadValue} for AccountId {record.AccountId}";
