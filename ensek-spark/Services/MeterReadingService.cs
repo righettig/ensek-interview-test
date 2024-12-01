@@ -15,21 +15,17 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
         var successfulReadings = new List<MeterReading>();
         var failedReadings = new List<string>();
 
-        if (file == null || file.Length == 0)
+        if (!IsFileValid(file))
         {
             failedReadings.Add("File is missing or empty.");
             return (successfulReadings, failedReadings);
         }
 
+        var userAccounts = await LoadUserAccountsAsync();
+        var existingReadings = await LoadExistingReadingsAsync();
+
         using var reader = new StreamReader(file.OpenReadStream());
         using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture));
-
-        var userAccounts = (await userAccountRepository.GetAllAsync())
-            .ToDictionary(u => u.AccountId);
-
-        var existingReadings = (await meterReadingRepository.GetAllAsync())
-            .GroupBy(r => r.AccountId)
-            .ToDictionary(g => g.Key, g => g.Max(r => r.MeterReadingDateTime));
 
         while (await csv.ReadAsync())
         {
@@ -37,42 +33,14 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
             {
                 var record = csv.GetRecord<MeterReading>();
 
-                // Validate AccountId
-                if (string.IsNullOrWhiteSpace(record.AccountId) || !userAccounts.ContainsKey(record.AccountId))
+                if (!IsValidMeterReading(record, userAccounts, existingReadings, out var validationError))
                 {
-                    failedReadings.Add($"Invalid AccountId: {record.AccountId}");
+                    failedReadings.Add(validationError);
                     continue;
                 }
 
-                // Validate MeterReadValue
-                // if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{1,5}$")) // up to 5 chars
-                if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{5}$")) // exactly 5 chars
-                {
-                    failedReadings.Add($"Invalid MeterReadValue: {record.MeterReadValue} for AccountId {record.AccountId}");
-                    continue;
-                }
-
-                // Validate Duplicate Entry
-                if (existingReadings.ContainsKey(record.AccountId) &&
-                    existingReadings[record.AccountId] == record.MeterReadingDateTime)
-                {
-                    failedReadings.Add($"Duplicate entry: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime}");
-                    continue;
-                }
-
-                // Validate that the new reading is not older than the existing reading
-                if (existingReadings.TryGetValue(record.AccountId, out var latestReadingDateTime) &&
-                    record.MeterReadingDateTime < latestReadingDateTime)
-                {
-                    failedReadings.Add($"Reading too old: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime} (latest: {latestReadingDateTime})");
-                    continue;
-                }
-
-                // Add valid record
                 await meterReadingRepository.UpsertAsync(record);
                 successfulReadings.Add(record);
-
-                // Update the latest reading for this account
                 existingReadings[record.AccountId] = record.MeterReadingDateTime;
             }
             catch (Exception ex)
@@ -82,5 +50,61 @@ public class MeterReadingService(IUserAccountRepository userAccountRepository,
         }
 
         return (successfulReadings, failedReadings);
+    }
+
+    private static bool IsFileValid(IFormFile file) => file != null && file.Length > 0;
+
+    private async Task<Dictionary<string, UserAccount>> LoadUserAccountsAsync()
+    {
+        var userAccounts = await userAccountRepository.GetAllAsync();
+        return userAccounts.ToDictionary(u => u.AccountId);
+    }
+
+    private async Task<Dictionary<string, DateTime>> LoadExistingReadingsAsync()
+    {
+        var readings = await meterReadingRepository.GetAllAsync();
+        return readings
+            .GroupBy(r => r.AccountId)
+            .ToDictionary(g => g.Key, g => g.Max(r => r.MeterReadingDateTime));
+    }
+
+    private static bool IsValidMeterReading(MeterReading record,
+                                            Dictionary<string, UserAccount> userAccounts,
+                                            Dictionary<string, DateTime> existingReadings,
+                                            out string validationError)
+    {
+        validationError = string.Empty;
+
+        // Validate AccountId
+        if (string.IsNullOrWhiteSpace(record.AccountId) || !userAccounts.ContainsKey(record.AccountId))
+        {
+            validationError = $"Invalid AccountId: {record.AccountId}";
+            return false;
+        }
+
+        // if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{1,5}$")) // up to 5 chars
+        if (!Regex.IsMatch(record.MeterReadValue.ToString(), @"^\d{5}$"))
+        {
+            validationError = $"Invalid MeterReadValue: {record.MeterReadValue} for AccountId {record.AccountId}";
+            return false;
+        }
+
+        // Validate Duplicate Entry
+        if (existingReadings.ContainsKey(record.AccountId) &&
+            existingReadings[record.AccountId] == record.MeterReadingDateTime)
+        {
+            validationError = $"Duplicate entry: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime}";
+            return false;
+        }
+
+        // Validate that the new reading is not older than the existing reading
+        if (existingReadings.TryGetValue(record.AccountId, out var latestReadingDateTime) &&
+            record.MeterReadingDateTime < latestReadingDateTime)
+        {
+            validationError = $"Reading too old: AccountId {record.AccountId}, DateTime {record.MeterReadingDateTime} (latest: {latestReadingDateTime})";
+            return false;
+        }
+
+        return true;
     }
 }
