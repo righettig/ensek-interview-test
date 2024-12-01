@@ -7,3 +7,5 @@
 .env
 /ensek_spark_tests_integration/bin
 /ensek_spark_tests_integration/obj
+/ensek_spark-tests-performance/bin
+/ensek_spark-tests-performance/obj

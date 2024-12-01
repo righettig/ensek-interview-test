@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek_spark_tests_integration", "..\ensek_spark_tests_integration\ensek_spark_tests_integration.csproj", "{C4992B43-2021-4D5C-80FD-C4757CB7214E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B5364636-BBD5-45FD-AD15-659BB57473EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensek_spark-tests-performance", "..\ensek_spark-tests-performance\ensek_spark-tests-performance.csproj", "{0841155F-8296-4CD7-8DE9-1FFD35680859}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,8 +43,17 @@ Global
 		{C4992B43-2021-4D5C-80FD-C4757CB7214E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4992B43-2021-4D5C-80FD-C4757CB7214E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4992B43-2021-4D5C-80FD-C4757CB7214E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0841155F-8296-4CD7-8DE9-1FFD35680859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0841155F-8296-4CD7-8DE9-1FFD35680859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0841155F-8296-4CD7-8DE9-1FFD35680859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0841155F-8296-4CD7-8DE9-1FFD35680859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EFFA14DF-55D0-42DA-9E54-8EFC00C0A0CA} = {B5364636-BBD5-45FD-AD15-659BB57473EA}
+		{C4992B43-2021-4D5C-80FD-C4757CB7214E} = {B5364636-BBD5-45FD-AD15-659BB57473EA}
+		{0841155F-8296-4CD7-8DE9-1FFD35680859} = {B5364636-BBD5-45FD-AD15-659BB57473EA}
 	EndGlobalSection
 EndGlobal
