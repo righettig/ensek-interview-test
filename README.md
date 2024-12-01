@@ -83,11 +83,12 @@
 		AccountId, FirstName, LastName
 	
 ### Improvements
-	1) use sql server db
-	2) event sourcing (to capture changes for auditing)
-	3) consider splitting user account related code into separate microservice
-	4) introduce API gateway
-	5) discuss how to scale (check for validations use a cache?)
-	6) multipart upload (when file is too big / support resume)
+	0) discuss about non-functional requirements and get more info about usage patterns, etc.
+	1) consider splitting user account related code into separate microservice then introduce API gateway to route requests
+	2) introduce event sourcing (to capture changes for auditing), show custom framework designed and implemented for AIRO	
+	3) multipart upload (when file is too big / support resume scenario)
+	4) discuss how to scale (e.g., introduce caching for validation checks, can we afford eventual consistency though?)
+	5) added a note in MeterReadingService about a potential refactoring to support more validations
+	6) add sql server db
 	7) add architectural diagram
 	
