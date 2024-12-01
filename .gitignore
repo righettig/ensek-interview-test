@@ -5,3 +5,5 @@
 /ensek-spark-tests/bin
 /ensek-spark-tests/obj
 .env
+/ensek_spark_tests_integration/bin
+/ensek_spark_tests_integration/obj
