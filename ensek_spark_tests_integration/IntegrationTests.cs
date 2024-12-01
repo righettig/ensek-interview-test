@@ -6,17 +6,31 @@ namespace ensek_spark_tests_integration;
 
 public class IntegrationTests
 {
+    private const string BaseUrl = "http://localhost:4000";
+    private const string UploadMeterReadingsUrl = $"{BaseUrl}/meter-reading-uploads";
+    private const string GetMeterReadingsUrl = $"{BaseUrl}/meter-readings";
+
+    private HttpClient CreateHttpClient() => new HttpClient();
+
+    private async Task<T> DeserializeResponse<T>(HttpResponseMessage response)
+    {
+        var responseData = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<T>(responseData, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        }) ?? throw new InvalidOperationException("Failed to deserialize response");
+    }
+
     #region UploadMeterReadings
 
     [Fact]
     public async Task UploadMeterReadings_ShouldReturnBadRequest_WhenNoFileIsProvided()
     {
         // Arrange
-        string url = "http://localhost:4000/meter-reading-uploads";
+        using var httpClient = CreateHttpClient();
 
         // Act
-        using var httpClient = new HttpClient();
-        var response = await httpClient.PostAsync(url, null);
+        var response = await httpClient.PostAsync(UploadMeterReadingsUrl, null);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -26,20 +40,15 @@ public class IntegrationTests
     public async Task UploadMeterReadings_ShouldReturnOk_WhenFileIsValid()
     {
         // Arrange
-        string url = "http://localhost:4000/meter-reading-uploads";
-
         string relativePath = @"..\..\..\..\ensek-test-data\Meter_Reading.csv";
-        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        string filePath = Path.Combine(baseDirectory, relativePath);
+        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
 
-        using var httpClient = new HttpClient();
+        using var httpClient = CreateHttpClient();
         using var form = new MultipartFormDataContent();
-
         using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
         var fileContent = new StreamContent(fileStream);
-
         fileContent.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
-
         form.Add(fileContent, "file", Path.GetFileName(filePath));
 
         var expectedData = new UploadResult
@@ -83,27 +92,15 @@ public class IntegrationTests
         };
 
         // Act
-        var response = await httpClient.PostAsync(url, form);
-
+        var response = await httpClient.PostAsync(UploadMeterReadingsUrl, form);
         response.EnsureSuccessStatusCode();
-        var responseData = await response.Content.ReadAsStringAsync();
-
-        // Deserialize the response JSON
-        var actualData = JsonSerializer.Deserialize<UploadResult>(responseData, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var actualData = await DeserializeResponse<UploadResult>(response);
 
         // Assert
         Assert.NotNull(actualData);
         Assert.Equal(expectedData.SuccessfulCount, actualData.SuccessfulCount);
         Assert.Equal(expectedData.FailedCount, actualData.FailedCount);
-        Assert.Equal(expectedData.FailedDetails.Count, actualData.FailedDetails.Count);
-
-        for (int i = 0; i < expectedData.FailedDetails.Count; i++)
-        {
-            Assert.Equal(expectedData.FailedDetails[i], actualData.FailedDetails[i]);
-        }
+        Assert.Equal(expectedData.FailedDetails, actualData.FailedDetails);
     }
 
     #endregion
@@ -114,7 +111,7 @@ public class IntegrationTests
     public async Task GetMeterReadings_ShouldReturnExpectedData()
     {
         // Arrange
-        string url = "http://localhost:4000/meter-readings";
+        using var httpClient = CreateHttpClient();
 
         var expectedData = new List<MeterReading>
         {
@@ -125,15 +122,9 @@ public class IntegrationTests
         };
 
         // Act
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(url);
+        var response = await httpClient.GetAsync(GetMeterReadingsUrl);
         response.EnsureSuccessStatusCode();
-        var responseData = await response.Content.ReadAsStringAsync();
-
-        var actualData = JsonSerializer.Deserialize<List<MeterReading>>(responseData, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var actualData = await DeserializeResponse<List<MeterReading>>(response);
 
         // Assert
         Assert.NotNull(actualData);
@@ -151,18 +142,12 @@ public class IntegrationTests
     public async Task GetMeterReadings_ShouldReturnEmptyList_WhenNoReadingsExist()
     {
         // Arrange
-        string url = "http://localhost:4000/meter-readings";
+        using var httpClient = CreateHttpClient();
 
         // Act
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(url);
+        var response = await httpClient.GetAsync(GetMeterReadingsUrl);
         response.EnsureSuccessStatusCode();
-        var responseData = await response.Content.ReadAsStringAsync();
-
-        var actualData = JsonSerializer.Deserialize<List<MeterReading>>(responseData, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var actualData = await DeserializeResponse<List<MeterReading>>(response);
 
         // Assert
         Assert.NotNull(actualData);
