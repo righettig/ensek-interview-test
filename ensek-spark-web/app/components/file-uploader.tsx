@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import styles from './file-uploader.module.css';
+
 const FileUploader = ({ onUpload }: { onUpload: (file: File | null) => void }) => {
     const [file, setFile] = useState<File | null>(null);
 
@@ -8,8 +10,8 @@ const FileUploader = ({ onUpload }: { onUpload: (file: File | null) => void }) =
     };
 
     return (
-        <div className="file-uploader">
-            <h2>Upload Meter Readings</h2>
+        <div className={styles['file-uploader']}>
+            <h2 style={{fontSize: '1em'}}>Upload Meter Readings</h2>
             <input type="file" onChange={handleFileChange} />
             <button onClick={() => onUpload(file)}>Upload</button>
         </div>

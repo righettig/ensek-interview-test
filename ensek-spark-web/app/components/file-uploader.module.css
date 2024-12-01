@@ -1,0 +1,12 @@
+.file-uploader {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.file-uploader h2 {
+    margin-bottom: 8px;
+}
+
+.file-uploader input {
+    margin-bottom: 10px;
+}

@@ -1,5 +1,7 @@
 import MeterReading from "../models/meter-reading.model";
 
+import styles from './meter-readings-table.module.css';
+
 // Helper function to format date
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -19,24 +21,26 @@ const MeterReadingsTable = ({ readings }: { readings: MeterReading[] }) => {
     }
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Account ID</th>
-                    <th>Timestamp</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {readings.map((reading, index) => (
-                    <tr key={index}>
-                        <td>{reading.accountId}</td>
-                        <td>{formatDate(reading.meterReadingDateTime)}</td>
-                        <td>{reading.meterReadValue}</td>
+        <div className={styles["readings-section"]}>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Timestamp</th>
+                        <th>Value</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {readings.map((reading, index) => (
+                        <tr key={index}>
+                            <td>{reading.accountId}</td>
+                            <td>{formatDate(reading.meterReadingDateTime)}</td>
+                            <td>{reading.meterReadValue}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

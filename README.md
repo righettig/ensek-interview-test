@@ -88,6 +88,6 @@
 	3) consider splitting user account related code into separate microservice
 	4) introduce API gateway
 	5) discuss how to scale (check for validations use a cache?)
-	6) cleanup css code: move styles to specific components	
+	6) multipart upload (when file is too big / support resume)
 	7) add architectural diagram
 	

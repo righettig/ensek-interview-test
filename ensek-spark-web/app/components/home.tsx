@@ -4,29 +4,31 @@ import { useFileUploader, useMeterReadings } from "../hooks/custom-hooks";
 import FileUploader from "./file-uploader";
 import MeterReadingsTable from "./meter-readings-table";
 
+import styles from './home.module.css';
+
 const Home = () => {
     const { readings, error } = useMeterReadings();
     const { uploadMessage, failedDetails, handleUpload } = useFileUploader();
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     return (
-        <div className="container">
+        <div className={styles.container}>
             <h1>ENSEK Spark</h1>
             <h2>Meter Readings</h2>
 
             <FileUploader onUpload={handleUpload} />
-            {uploadMessage && <p className="message">{uploadMessage}</p>}
+            {uploadMessage && <p className={styles.message}>{uploadMessage}</p>}
 
             {failedDetails && failedDetails.length > 0 && (
-                <div className="collapsible-section">
+                <div className={styles['collapsible-section']}>
                     <button
-                        className="toggle-button"
+                        className={styles['toggle-button']}
                         onClick={() => setIsExpanded(!isExpanded)}
                     >
                         {isExpanded ? "Hide Failed Details" : "Show Failed Details"}
                     </button>
                     {isExpanded && (
-                        <ul className="error-list">
+                        <ul className={styles['error-list']}>
                             {failedDetails.map((detail, index) => (
                                 <li key={index}>{detail}</li>
                             ))}
@@ -35,10 +37,9 @@ const Home = () => {
                 </div>
             )}
 
-            <div className="readings-section">
-                {error && <p className="error">{error}</p>}
-                <MeterReadingsTable readings={readings} />
-            </div>
+            {error && <p className={styles.error}>{error}</p>}
+
+            <MeterReadingsTable readings={readings} />
         </div>
     );
 };

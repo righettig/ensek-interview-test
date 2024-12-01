@@ -1,0 +1,38 @@
+.readings-section {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: var(--background);
+}
+
+.readings-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.readings-section th,
+.readings-section td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.readings-section th {
+    background-color: #f4f4f4;
+    color: var(--foreground);
+}
+
+.readings-section tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Light gray for odd rows */
+}
+
+.readings-section tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+}
+
+/* Hover effect for rows */
+.readings-section tbody tr:hover {
+    background-color: #e0f7fa; /* Light blue tint on hover */
+    cursor: pointer; /* Optional: Changes cursor to pointer for interactivity */
+}
